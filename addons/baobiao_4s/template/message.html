@@ -1,0 +1,109 @@
+{template 'common/header'}
+<link rel="stylesheet" type="text/css" href="../addons/baobiao_4s/resources/style.css"/>
+<link rel="stylesheet" type="text/css" href="../addons/baobiao_4s/resources/sweetalert2.min.css"/>
+
+<div class="main">
+
+    <div class="alert alert-info" role="alert">
+        <h4>注意事项</h4>
+        <p>1. 开启短信通知后，顾客在小程序里预约项目管理员会收到一条提醒短信。</p>
+        <p>2. 当前支持阿里云短信服务，费用大概在0.045元每条短信。</p>
+        <p>3. 短信接口的申请和配置可以<a href="https://www.kancloud.cn/ganti/zqkj/496160" class="alert-link" target="_blank">查看文档</a>。</p>
+        <p>4. 请先提交保存设置后再测试短信发送。</p>
+        <p>5. 为防止恶意刷短信，系统限制了单个微信用户一天只会触发一条短信提醒。</p>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">短信设置</div>
+        <div class="panel-body">
+            <form action="" method="post" class="form-horizontal form" id="form">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">短信平台</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" name="status" id="status">
+                            <option value="0" {php echo 0==$data['status']?'selected':''}>关闭</option>
+                            <option value="1" {php echo 1==$data['status']?'selected':''}>阿里云短信</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">短信APPKEY</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="appkey" value="{$data['appkey']}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">短信SECRET</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="secret" value="{$data['secret']}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">短信签名</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="signature" value="{$data['signature']}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">短信模板ID</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="template" value="{$data['template']}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">接收提醒手机</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="admin_phone" id="admin_phone"
+                               value="{$data['admin_phone']}">
+                        <span class="input-tips">请先提交保存设置后再测试短信发送</span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="btn btn-info test_send_msg" id="send-test-message">测试发送</span>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2">
+                        <input name="submit" type="submit" value="提交" class="btn btn-primary"/>
+                        <input type="hidden" name="token" value="{$_W['token']}"/>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    require(["../addons/baobiao_4s/resources/sweetalert2.min.js"], function () {
+        $(function () {
+            //删除
+            $("#send-test-message").click(function () {
+                var that = $(this);
+                var phone = $('#admin_phone').val();
+                $.ajax({
+                    type: "post",
+                    url: "{php echo $this->createWebUrl('testSMS');}",
+                    data: {phone: phone},
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status == 1) {
+                            swal('短信发送成功!', res.message, 'success');
+                        } else {
+                            swal('短信发送失败!', res.message, 'error');
+                        }
+                    }
+                })
+            })
+        })
+    });
+</script>
+{template 'common/footer'}

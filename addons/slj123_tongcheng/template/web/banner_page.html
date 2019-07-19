@@ -1,0 +1,308 @@
+{template 'common/header'}
+{template 'web/AJcommonCssAndJs'}
+
+{if $pagediv=='list'}
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="{php echo $this->createWebUrl('banner_action',array('op'=>'list'));}">所有幻灯片</a></li>
+  <li role="presentation"><a href="{php echo $this->createWebUrl('banner_action',array('op'=>'add'));}">添加幻灯片</a></li>
+</ul>
+
+<div style="padding-top:5px;"></div>
+
+
+
+<form action="" class="form-horizontal form" method="post" autocomplete="off">
+
+<input type="hidden" name="token" value="{$_W['token']}" />
+
+<input type="hidden" name="op" value="list">
+
+
+
+<div class="panel panel-default">
+
+<div class="panel-heading">
+
+<input type="checkbox" name="" onclick="var ck = this.checked;$(':checkbox').each(function(){this.checked = ck});">选择
+
+<input type="submit" name="delete_selectd" class="btn btn-primary" value="选中删除">
+
+
+</div>
+
+        
+
+<div class="panel-body">
+
+
+
+<table class="table table-hover tb_center">
+
+<thead class="navbar-inner">
+
+<tr>
+
+<th style="width:60px;">删?</th> 
+
+<!-- <th style="width:60px;">ID</th>		 -->				
+
+
+
+<th style="width:160px;" >
+
+  <div>幻灯图片</div>
+
+
+</th>
+
+<th style="width:80px;" >排序</th>
+
+
+<th style="width:140px;">创建时间</th>
+
+<th style="text-align:center;">操作</th>
+
+</tr>
+
+</thead>
+<tbody>
+
+{if $list}
+
+{loop $list $index $row}
+
+<tr>
+
+	<!-- <td>{if $row['thumb']}<a href="{php echo tomedia($row['thumb']);}" target="_blank"><img src="{php echo tomedia($row['thumb']);}" style="height:40px;width:40px;"></a>{else}<i class="c_gray">无图</i>{/if}</td> -->
+
+<td><input type="checkbox" name="ids[]" value="{$row['id']}" class="">{$row['id']}</td>			
+
+<!-- <td class="row-first">{$row['id']}</td> -->
+
+
+
+<td>{if $row['img']}<a href="{php echo tomedia($row['img']);}" target="_blank"><img src="{php echo tomedia($row['img']);}" style="height:50px;width:100px;"></a>{else}<i class="c_gray">无图</i>{/if}
+
+
+
+</div>
+
+
+
+</td>
+
+</td>
+<td>{$row['pxh']}</td>
+
+
+<td>{php echo date('y-m-d H:i:s',$row['crtime'])}
+
+</td>
+
+
+
+
+
+<td align="center">
+
+<div class="btn-group">
+
+<a href="{php echo $this->createWebUrl('banner_action', array('id'=>$row['id'],'op'=>'edit'))}" title="编辑" class='btn btn-default btn-sm'><i class="fa fa-edit"></i>编辑</a> 
+
+<a href="{php echo $this->createWebUrl('banner_action', array('id'=>$row['id'],'op'=>'del'))}" title="删除" class='btn btn-default btn-sm' onclick="return confirm('确定要删除吗?')"><i class="fa fa-remove"></i>删除</a>
+
+</div>
+
+</td>
+
+</tr>
+
+{/loop}
+
+{else}
+
+<tr>
+
+<td colspan="5" align='center'>暂无数据</td>
+
+</tr>
+
+{/if}
+</tbody>
+</table>
+{$result['pager']} 
+</div>
+
+{else}
+<!-- 表单 -->
+
+<ul class="nav nav-tabs">
+
+<li><a href="{php echo $this->createWebUrl('banner_action',array('op'=>'list'));}">
+
+所有幻灯片</a></li>
+
+<li class="active">
+
+<a href="#">
+
+{if !empty($id)}修改{else}添加{/if}幻灯片</a></li>
+
+</ul>
+
+<div style="padding-top:5px;"></div>   
+
+<div class="">
+
+<form action="" class="form-horizontal form" method="post" autocomplete="off">
+
+<input type="hidden" name="id" value="{$det['id']}">
+
+<input type="hidden" name="op" value="{$_GPC['op']}">
+
+<input type="hidden" name="token" value="{$_W['token']}" />		
+
+
+
+  <div class="panel panel-default">
+
+    <div class="panel-heading" id="paoject_info">
+
+      幻片信息主体
+
+    </div>
+
+    <div class="panel-body">
+
+      
+
+<div class="form-group">
+
+<label class="col-md-2 control-label"><i class="c_red">*</i>图片(比例:16:9宽*高)</label>
+
+<div class="col-sm-7">
+
+<div class="btn-group" data-toggle="buttons">
+
+{php echo tpl_form_field_image('img',$det['img']);}
+
+</div></div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="form-group">
+
+<label class="col-xs-12 col-sm-3 col-md-2 control-label">排序：</label>
+
+<div class="col-sm-8">
+
+<input type="number" class="form-control" name="pxh" autocomplete="off" value="{$det['pxh']}" />
+
+</div></div>
+
+
+
+
+
+
+
+
+
+<div class="form-group">
+
+<label class="col-md-2 control-label">启用状态</label>
+
+<div class="col-sm-7">
+
+<div class="btn-group" data-toggle="buttons">
+
+<label class="btn btn-primary {if $det['enable']==1}active{/if}">
+
+<input type="radio" name="enable" value="1" {if $det['enable']==1}checked="true"{/if}>是
+
+</label>
+
+<label class="btn btn-primary  {if $det['enable']==0}active{/if}">    
+
+<input type="radio" name="enable" value="0" {if $det['enable']==0}checked="true"{/if}>否
+
+</label></div></div>
+
+</div>
+
+
+
+    </div>
+
+  </div>
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+<div class="panel panel-default" style="border:none;">
+
+<!-- <div class="panel-heading" id="paoject_info">
+
+{if !empty($id)}修改{else}添加{/if}{php echo urldecode($h_title);}
+
+</div> -->
+
+<div class="panel-body">
+
+
+
+<div class="form-group">
+
+
+
+<div class="col-sm-9">
+
+<button type="submit" style="margin-left: 200px;" class="btn btn-success col-lg-5" name="submit" value="提交">提交</button>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+
+
+</div>
+{/if}
+{template 'common/footer'}

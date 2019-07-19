@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.0598128.com" versionCode="0.6">
+	<application setting="true">
+		<name><![CDATA[小程序拼车]]></name>
+		<identifie><![CDATA[slj123_tongcheng]]></identifie>
+		<version><![CDATA[6.3.9]]></version>
+		<type><![CDATA[business]]></type>
+		<ability><![CDATA[小程序拼车]]></ability>
+		<description><![CDATA[小程序拼车]]></description>
+		<author><![CDATA[好源码网]]></author>
+		<url><![CDATA[http://www.0598128.com]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+		<supports><item type="wxapp" /></supports>
+		<plugin-main name="0" />
+	</platform>
+	<bindings>
+		<menu>
+			<entry title="拼车-用户认证" do="Verify" state="" direct="false" />
+			<entry title="拼车-基础设置" do="basic" state="" direct="false" />
+			<entry title="拼车-信息管理" do="pinche" state="" direct="false" />
+		</menu>
+		<page>
+			<entry title="首页" do="/slj123_tongcheng/component/index" state="" direct="false" />
+		</page>
+	</bindings>
+	<permissions>
+	</permissions>
+	<install><![CDATA[m_install.php]]></install>
+	<uninstall><![CDATA[DROP TABLE IF EXISTS `ims_slj123_pc_content`;
+DROP TABLE IF EXISTS `ims_slj123_pc_index`;
+DROP TABLE IF EXISTS `ims_slj123_pc_order`;
+DROP TABLE IF EXISTS `ims_slj123_pc_setting`;
+DROP TABLE IF EXISTS `ims_slj123_pc_sms_code`;
+DROP TABLE IF EXISTS `ims_slj123_pc_user`;
+]]></uninstall>
+	<upgrade><![CDATA[m_upgrade.php]]></upgrade>
+</manifest>

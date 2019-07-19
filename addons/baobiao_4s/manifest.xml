@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="https://s.we7.cc" versionCode="0.6">
+	<application setting="false">
+		<name><![CDATA[4s汽车城行业小程序]]></name>
+		<identifie><![CDATA[baobiao_4s]]></identifie>
+		<version><![CDATA[8.0.0]]></version>
+		<type><![CDATA[enterprise]]></type>
+		<ability><![CDATA[4s汽车城行业小程序。]]></ability>
+		<description><![CDATA[4s汽车城行业小程序。]]></description>
+		<author><![CDATA[微擎]]></author>
+		<url><![CDATA[https://s.we7.cc]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+		<supports>
+			<item type="wxapp" />
+		</supports>
+	</platform>
+	<bindings>
+		<menu>
+			<entry title="新闻管理" do="news" state="" direct="false" />
+			<entry title="技术支持" do="support" state="" direct="false" />
+			<entry title="新闻分类" do="node" state="" direct="false" />
+			<entry title="预约列表" do="order" state="" direct="false" />
+			<entry title="交车照片" do="photo" state="" direct="false" />
+			<entry title="销售展示" do="salesman" state="" direct="false" />
+			<entry title="车型管理" do="car" state="" direct="false" />
+			<entry title="汽车品牌" do="category" state="" direct="false" />
+			<entry title="轮播管理" do="swiper" state="" direct="false" />
+			<entry title="系统设置" do="setting" state="" direct="false" />
+		</menu>
+	</bindings>
+	<install><![CDATA[m_install.php]]></install>
+	<uninstall><![CDATA[DROP TABLE IF EXISTS `ims_baobiao_4s_car`;
+DROP TABLE IF EXISTS `ims_baobiao_4s_category`;
+DROP TABLE IF EXISTS `ims_baobiao_4s_news`;
+DROP TABLE IF EXISTS `ims_baobiao_4s_node`;
+DROP TABLE IF EXISTS `ims_baobiao_4s_order`;
+DROP TABLE IF EXISTS `ims_baobiao_4s_photo`;
+DROP TABLE IF EXISTS `ims_baobiao_4s_salesman`;
+DROP TABLE IF EXISTS `ims_baobiao_4s_setting`;
+DROP TABLE IF EXISTS `ims_baobiao_4s_swiper`;
+]]></uninstall>
+	<upgrade><![CDATA[m_upgrade.php]]></upgrade>
+</manifest>

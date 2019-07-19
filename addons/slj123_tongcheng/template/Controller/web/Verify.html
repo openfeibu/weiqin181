@@ -1,0 +1,9 @@
+<?PHP global $_W, $_GPC; ?>
+<!--{template 'common/header'}-->
+<ul class="nav nav-tabs">
+	<!--{loop $GLOBALS['_W']['tabs'] $key $name}-->
+		<li data-eval-1="{if $GLOBALS['_GPC']['ac'] === $key}" class="active" data-eval-2="{/if}"><a href="{php echo $this->createWebUrl(basename(str_replace('\\', '/', get_class())), array('ac' => $key))}">{$name}</a></li>
+	<!--{/loop}-->
+</ul>
+<!--{template 'Verify_' . $GLOBALS['_GPC']['ac']}-->
+<!--{template 'common/footer'}-->

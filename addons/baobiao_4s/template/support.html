@@ -1,0 +1,109 @@
+{template 'common/header'}
+
+<link rel="stylesheet" type="text/css" href="../addons/baobiao_4s/resources/style.css"/>
+
+
+<div class="main">
+    <div class="alert alert-info" role="alert">
+        <h4>注意事项</h4>
+        <p>因为性能考虑，设置项有半小时的缓存时间。修改设置之后小程序端并不能马上生效，可以在小程序首页下拉刷新，强制更新缓存。</p>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">{if $data['id']}编辑{else}添加{/if}</div>
+        <div class="panel-body">
+            <form action="" method="post" class="form-horizontal form" id="form">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">技术支持</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="tech_support" value="{$data['tech_support']}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2">
+                        <input name="submit" type="submit" value="提交" class="btn btn-primary"/>
+                        <input type="hidden" name="token" value="{$_W['token']}"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {template 'common/footer'}
+
+        <script charset="utf-8"
+                src="https://map.qq.com/api/js?v=2.exp&key=CE3BZ-ZH6AW-TDQRN-ORJH6-HSPIE-7XB3W"></script>
+        <script>
+            $(function () {
+                var markers = [];
+                var longitude = $("input[name='longitude']").val();
+                var latitude = $("input[name='latitude']").val();
+                if (longitude != "" && latitude != "") {
+                    var center = new qq.maps.LatLng(latitude, longitude);
+                } else {
+                    var center = new qq.maps.LatLng(39.916527, 116.397128);
+                }
+                var map = new qq.maps.Map(document.getElementById('container'), {
+                    center: center,
+                    zoom: 16
+                });
+                var marker = new qq.maps.Marker({
+                    map: map,
+                    position: center
+                });
+                markers.push(marker);
+                //调用地址解析类
+                geocoder = new qq.maps.Geocoder({
+                    complete: function (result) {
+                        if (result.detail.location != "") {
+                            map.setCenter(result.detail.location);
+                            console.log(result.detail.location);
+                            $("input[name='longitude']").val(result.detail.location.lng);
+                            $("input[name='latitude']").val(result.detail.location.lat);
+                            clearOverlays(markers);
+                            var marker = new qq.maps.Marker({
+                                map: map,
+                                position: result.detail.location
+                            });
+                            markers.push(marker);
+                        }
+                        if (result.detail.address != "") {
+                            $("input[name='search']").val(result.detail.address);
+                        }
+                    }
+                });
+                geocoder.getAddress(center);
+                qq.maps.event.addListener(
+                    map,
+                    'click',
+                    function (event) {
+                        $("input[name='longitude']").val(event.latLng.getLng());
+                        $("input[name='latitude']").val(event.latLng.getLat());
+                        var center = new qq.maps.LatLng(event.latLng.getLat(), event.latLng.getLng());
+                        clearOverlays(markers);
+                        var marker = new qq.maps.Marker({
+                            map: map,
+                            position: center
+                        });
+                        markers.push(marker);
+                        geocoder.getAddress(center);
+                    }
+                );
+                $(".search").click(function () {
+                    console.log('aaa')
+                    var content = $("input[name='search']").val();
+                    if (content != "") {
+                        geocoder.getLocation(content);
+                    }
+                });
+            })
+
+            function clearOverlays(overlays) {
+                var overlay;
+                if (overlays.length > 0) {
+                    while (overlay = overlays.pop()) {
+                        overlay.setMap(null);
+                    }
+                }
+
+            }
+        </script>

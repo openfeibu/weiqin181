@@ -1,0 +1,30 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">用户信息</h3>
+	</div>
+	<div class="panel-body table-responsive">
+		<table class="table table-hover">
+			<thead>
+			<tr>
+				<th>用户名</th>
+				<th>手机号</th>
+				<th>性别</th>
+				<th>操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			<!--{loop $GLOBALS['PARAMS']['list'] $item}-->
+			<tr>
+				<td>{$item['realname']}</td>
+				<td>{$item['phone']}</td>
+				<td>{if $item['sex']==1}男{else}女{/if}</td>
+				<td><a href="{php echo $this->createWebUrl('Verify', array('user_id' => $item['id'], 'ac' => 'edit'))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="编辑"><i class="fa fa-pencil"></i></a>
+				<a href="{php echo $this->createWebUrl('Verify', array('user_id' => $item['id'], 'ac' => 'del'))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="删除"><i class="">X</i></a></td>
+				
+			</tr>
+			<!--{/loop}-->
+			</tbody>
+		</table>
+	</div>
+	<!--{$pager}-->
+</div>

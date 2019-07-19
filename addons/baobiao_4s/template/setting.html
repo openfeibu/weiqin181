@@ -1,0 +1,480 @@
+{template 'common/header'}
+
+<link rel="stylesheet" type="text/css" href="../addons/baobiao_4s/resources/style.css"/>
+
+
+<div class="main">
+    <div class="alert alert-info" role="alert">
+        <h4>注意事项</h4>
+        <p>因为性能考虑，设置项有半小时的缓存时间。修改设置之后小程序端并不能马上生效，可以在小程序首页下拉刷新，强制更新缓存。</p>
+    </div>
+
+    <ul id="myTab" class="nav nav-tabs">
+        <li class="active">
+            <a href="#system" data-toggle="tab">
+                系统设置
+            </a>
+        </li>
+        <li>
+            <a href="#style" data-toggle="tab">
+                样式设置
+            </a>
+        </li>
+        <li>
+            <a href="#calculate" data-toggle="tab">
+                购车计算器
+            </a>
+        </li>
+        <li>
+            <a href="#text_show" data-toggle="tab">
+                小程序文案
+            </a>
+        </li>
+        <li>
+            <a href="#email" data-toggle="tab">
+                邮件通知
+            </a>
+        </li>
+    </ul>
+    <form action="" method="post" class="form-horizontal form" id="form">
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="system">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Logo图(100x100)</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_image('logo', $data['logo']);}
+                        <span class="input-tips">门店的logo图，正方形，将会显示在汽车详细页面的左下角。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">在线预约顶部图片（800x400）</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_multi_image('banner', $data['banner']);}
+                        <span class="input-tips">将会显示在在线预约页面表单的顶部。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">客服消息图标（100x100)</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_image('contact_icon', $data['contact_icon']);}
+                        <span class="input-tips">设置图标则显示客服消息按钮，不设置则不显示</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">公司名称</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="name" value="{$data['name']}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">公司地址</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="address" value="{$data['address']}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">售前电话</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="phone" value="{$data['phone']}">
+                        <span class="input-tips">门店电话，可以输入多个电话，多个电话使用空格分割。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">售后电话</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="phone2" value="{$data['phone2']}">
+                        <span class="input-tips">门店电话，可以输入多个电话，多个电话使用空格分割。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">关于我们</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_ueditor('about', $data['about']);}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">地图定位</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="search" id="search" value="{$data['address']}">
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-default search" style="margin-right:5px;">查询</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">地图</label>
+                    <div class="col-sm-10">
+                        <div id="container" style="width: 100%;height: 400px;"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <label class="col-sm-2 control-label" style="width: auto;padding-left: 15px;">经度</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" name="longitude" value="{$data['longitude']}">
+                    </div>
+                    <label class="col-sm-2 control-label" style="width: auto;">纬度</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" name="latitude" value="{$data['latitude']}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade in" id="style">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否隐藏地址导航</label>
+                    <div class="col-sm-8">
+                        {if $data['location_section']}
+                        <input type="checkbox" checked class="js-switch" value="1" name="location_section">
+                        {else}
+                        <input type="checkbox" class="js-switch" name="location_section" value="1">
+                        {/if}
+                        <span class="input-tips">小程序首页是否隐藏公司地址导航。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否隐藏交车照片</label>
+                    <div class="col-sm-8">
+                        {if $data['photo_section']}
+                        <input type="checkbox" checked class="js-switch" value="1" name="photo_section">
+                        {else}
+                        <input type="checkbox" class="js-switch" name="photo_section" value="1">
+                        {/if}
+                        <span class="input-tips">小程序首页是否隐藏交车照片栏目。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否隐藏主营品牌</label>
+                    <div class="col-sm-8">
+                        {if $data['brand_section']}
+                        <input type="checkbox" checked class="js-switch" value="1" name="brand_section">
+                        {else}
+                        <input type="checkbox" class="js-switch" name="brand_section" value="1">
+                        {/if}
+                        <span class="input-tips">小程序首页是否隐藏主营品牌栏目。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否隐藏销售展示</label>
+                    <div class="col-sm-8">
+                        {if $data['salesman_section']}
+                        <input type="checkbox" checked class="js-switch" value="1" name="salesman_section">
+                        {else}
+                        <input type="checkbox" class="js-switch" name="salesman_section" value="1">
+                        {/if}
+                        <span class="input-tips">门店介绍页是否隐藏销售展示栏目。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否隐藏购车计算器</label>
+                    <div class="col-sm-8">
+                        {if $data['car_calculate']}
+                        <input type="checkbox" checked class="js-switch" value="1" name="car_calculate">
+                        {else}
+                        <input type="checkbox" class="js-switch" name="car_calculate" value="1">
+                        {/if}
+                        <span class="input-tips">车型详细页是否隐藏购车计算器。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否隐藏首页推荐车型Hot图标</label>
+                    <div class="col-sm-8">
+                        {if $data['hot_icon']}
+                        <input type="checkbox" checked class="js-switch" value="1" name="hot_icon">
+                        {else}
+                        <input type="checkbox" class="js-switch" name="hot_icon" value="1">
+                        {/if}
+                        <span class="input-tips">是否隐藏首页推荐车型Hot图标。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否隐藏新闻栏目</label>
+                    <div class="col-sm-8">
+                        {if $data['news_section']}
+                        <input type="checkbox" checked class="js-switch" value="1" name="news_section">
+                        {else}
+                        <input type="checkbox" class="js-switch" name="news_section" value="1">
+                        {/if}
+                        <span class="input-tips">小程序是否隐藏新闻栏目。包括首页和底部导航。</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade in" id="calculate">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">上牌费用（元）</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" name="register_price"
+                               value="{php echo $data['register_price']?: 500}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">贷款利率（小数，如 0.0525）</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="interest_rate"
+                               value="{php echo $data['interest_rate']?: 0.0525}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">车船使用税 1.0L（含）以下</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" name="tax_0" value="{php echo $data['tax_0']?: 300}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">车船使用税 1.0-1.6L（含）</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" name="tax_1" value="{php echo $data['tax_1']?: 420}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">车船使用税 1.6-2.0L（含）以下</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" name="tax_2" value="{php echo $data['tax_2']?: 480}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">车船使用税 2.0-2.5L（含）</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" name="tax_3" value="{php echo $data['tax_3']?: 900}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">车船使用税 2.5-3.0L（含）以下</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" name="tax_4" value="{php echo $data['tax_4']?: 1920}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">车船使用税 3.0-4.0L（含）</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" name="tax_5" value="{php echo $data['tax_5']?: 3480}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">车船使用税 4.0L以上</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" name="tax_6" value="{php echo $data['tax_6']?: 5280}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade in" id="text_show">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">车型详细页车型名称底部广告</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="detail_ad_text"
+                               value="{$data['detail_ad_text']}">
+                        <span class="input-tips">显示在车型详细页车型名称的底部的小字，可用作促销广告。</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">交车照片文案</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="photo_text"
+                               value="{php echo $data['photo_text']?: '交车照片'}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">主营品牌文案</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="brand_text"
+                               value="{php echo $data['brand_text']?: '主营品牌'}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">推荐车型文案</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="recommend_text"
+                               value="{php echo $data['recommend_text']?: '推荐车型'}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">销售展示文案</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="salesman_text"
+                               value="{php echo $data['salesman_text']?: '销售展示'}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">公司简介文案</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="company_text"
+                               value="{php echo $data['company_text']?: '公司简介'}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">门店介绍文案</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="shop_text"
+                               value="{php echo $data['shop_text']?: '门店介绍'}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">表单留言提示文案</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="message_text"
+                               value="{php echo $data['message_text']?: '留言内容（可选）'}">
+                        <span class="input-tips">在线预约表单留言内容项的提示文案。</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade in" id="email">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">是否启用邮件通知</label>
+                    <div class="col-sm-8">
+                        {if $data['is_email_on']}
+                        <input type="checkbox" checked class="js-switch" value="1" name="is_email_on">
+                        {else}
+                        <input type="checkbox" class="js-switch" name="is_email_on" value="1">
+                        {/if}
+                        <span class="input-tips">用户提交预约表单是否发送邮件提醒管理员。 文档：<a
+                                href="https://www.kancloud.cn/ganti/zqkj/522098" target="_blank">点击查看</a></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">发件人邮箱</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="email_from"
+                               value="{$data['email_from']}">
+                        <span class="input-tips">目前只支持QQ邮箱，如 aaa@qq.com 文档：<a
+                                href="https://www.kancloud.cn/ganti/zqkj/522098" target="_blank">点击查看</a></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">授权码</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="email_password"
+                               value="{$data['email_password']}">
+                        <span class="input-tips">QQ邮箱授权码 文档：<a
+                                href="https://www.kancloud.cn/ganti/zqkj/522098" target="_blank">点击查看</a></span>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">收件人</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="email_to"
+                               value="{$data['email_to']}">
+                        <span class="input-tips">接收预约提醒的收件人邮箱，多个邮箱使用空格分隔</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">邮件标题</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="email_title"
+                               value="{php echo $data['email_title'] ?: '汽车小程序邮件提醒'}">
+                        <span class="input-tips">邮件的标题，用于区分邮件来源</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2">
+                <input name="submit" type="submit" value="提交" class="btn btn-primary"/>
+                <input type="hidden" name="token" value="{$_W['token']}"/>
+            </div>
+        </div>
+    </form>
+</div>
+
+{template 'common/footer'}
+
+<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp&key=CE3BZ-ZH6AW-TDQRN-ORJH6-HSPIE-7XB3W"></script>
+<script>
+    $(function () {
+        var markers = [];
+        var longitude = $("input[name='longitude']").val();
+        var latitude = $("input[name='latitude']").val();
+        if (longitude != "" && latitude != "") {
+            var center = new qq.maps.LatLng(latitude, longitude);
+        } else {
+            var center = new qq.maps.LatLng(39.916527, 116.397128);
+        }
+        var map = new qq.maps.Map(document.getElementById('container'), {
+            center: center,
+            zoom: 16
+        });
+        var marker = new qq.maps.Marker({
+            map: map,
+            position: center
+        });
+        markers.push(marker);
+        //调用地址解析类
+        geocoder = new qq.maps.Geocoder({
+            complete: function (result) {
+                if (result.detail.location != "") {
+                    map.setCenter(result.detail.location);
+                    console.log(result.detail.location);
+                    $("input[name='longitude']").val(result.detail.location.lng);
+                    $("input[name='latitude']").val(result.detail.location.lat);
+                    clearOverlays(markers);
+                    var marker = new qq.maps.Marker({
+                        map: map,
+                        position: result.detail.location
+                    });
+                    markers.push(marker);
+                }
+                if (result.detail.address != "") {
+                    $("input[name='search']").val(result.detail.address);
+                }
+            }
+        });
+        geocoder.getAddress(center);
+        qq.maps.event.addListener(
+            map,
+            'click',
+            function (event) {
+                $("input[name='longitude']").val(event.latLng.getLng());
+                $("input[name='latitude']").val(event.latLng.getLat());
+                var center = new qq.maps.LatLng(event.latLng.getLat(), event.latLng.getLng());
+                clearOverlays(markers);
+                var marker = new qq.maps.Marker({
+                    map: map,
+                    position: center
+                });
+                markers.push(marker);
+                geocoder.getAddress(center);
+            }
+        );
+        $(".search").click(function () {
+            console.log('aaa')
+            var content = $("input[name='search']").val();
+            if (content != "") {
+                geocoder.getLocation(content);
+            }
+        });
+    })
+
+    function clearOverlays(overlays) {
+        var overlay;
+        if (overlays.length > 0) {
+            while (overlay = overlays.pop()) {
+                overlay.setMap(null);
+            }
+        }
+
+    }
+</script>

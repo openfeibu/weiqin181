@@ -1,0 +1,133 @@
+{template 'common/header'}
+<link rel="stylesheet" type="text/css" href="../addons/baobiao_4s/resources/style.css"/>
+
+
+
+<div class="alert alert-info" role="alert">
+    <h4>注意事项</h4>
+    <p>本系统支持一键抓取汽车参数入库，无需手动填写。文档请看：<a href="https://www.kancloud.cn/ganti/car/518145" class="alert-link" target="_blank">查看文档</a>。</p>
+</div>
+
+<ul class="nav nav-tabs">
+    <li><a href="{php echo $this->createWebUrl('car');}">车型列表</a></li>
+    <li class="active"><a href="{php echo $this->createWebUrl('car', array('op' => 'edit'));}">{if $data['id']}编辑{else}添加{/if}</a></li>
+</ul>
+
+<div class="main">
+    <div class="panel panel-default">
+        <div class="panel-heading">{if $data['id']}编辑{else}添加{/if}</div>
+        <div class="panel-body">
+            <form action="{php echo $this->createWebUrl('car', array('op' => 'save'));}" method="post" class="form-horizontal form" id="form">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">* 封面图</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_form_field_multi_image('images', $data['images']);}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">* 名称</label>
+                    <div class="col-sm-8">
+                        <input required type="text" name="name" class="form-control" value="{$data['name']}"/>
+                        <span class="input-tips">汽车的名称。如：奥迪A6L</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">* 品牌</label>
+                    <div class="col-sm-8">
+                        <select class="form-control" required name="category_id">
+                            {loop $category $key $item}
+                            <option value="{$key}"
+                                    {php echo $key==$data['category_id']?'selected':''}
+                            >{$item}</option>
+                            {/loop}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">* 型号</label>
+                    <div class="col-sm-8">
+                        <input required type="text" name="model" class="form-control" value="{$data['model']}"/>
+                        <span class="input-tips">汽车的型号。如：16款 1.2L 手动舒适</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">* 排量（L)</label>
+                    <div class="col-sm-8">
+                        <input required type="text" name="output" class="form-control" value="{$data['output']}" placeholder=""/>
+                        <span class="input-tips">汽车的排量，不带单位。如：1.6</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">* 座位数量</label>
+                    <div class="col-sm-8">
+                        <input required type="number" name="seat" class="form-control" value="{$data['seat']}" placeholder=""/>
+                        <span class="input-tips">汽车的座位数量。如：5</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">* 售价（万）</label>
+                    <div class="col-sm-8">
+                        <input required type="text" name="price" class="form-control" value="{$data['price']}" placeholder=""/>
+                        <span class="input-tips">汽车的售价，不带单位。如：15.66</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">* 指导价（万）</label>
+                    <div class="col-sm-8">
+                        <input required type="text" name="guide_price" class="form-control" value="{$data['guide_price']}" placeholder=""/>
+                        <span class="input-tips">汽车的指导价，不带单位。如：15.66</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">* 排序</label>
+                    <div class="col-sm-8">
+                        <input required type="number" name="sort" class="form-control" value="{php echo $data['sort'] ?: 0}"/>
+                        <span class="input-tips">车型列表页面汽车的排序，数字大的显示在上面。默认为0则按添加时间排序，新加入的显示在上。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">视频</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="video" class="form-control" value="{$data['video']}"/>
+                        <span class="input-tips">可选，需要提供视频的在线地址。建议把视频上传到七牛或者阿里云oss。</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">汽车参数抓取地址</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="parameter" class="form-control" value="{$data['parameter']}"/>
+                        <span class="input-tips">汽车参数无需手动填写，支持一键抓取太平洋汽车网页参数入库。地址格式如：http://price.pcauto.com.cn/sg22189/config.html http://price.pcauto.com.cn/m77587/config.html</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">详细描述</label>
+                    <div class="col-sm-8">
+                        {php echo tpl_ueditor('detail', $data['detail']);}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-12 col-sm-9 col-md-10 col-lg-10 col-sm-offset-3 col-md-offset-2 col-lg-offset-2">
+                        <input name="submit" type="submit" value="提交" class="btn btn-primary"/>
+                        <input type="hidden" name="token" value="{$_W['token']}"/>
+                        <input type="hidden" name="id" value="{$data['id']}">
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{template 'common/footer'}
